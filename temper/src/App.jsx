@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './App.css';
 import useUserLocation from './geolocation/useUserLocation'; // Importera useUserLocation-hooken
 
 const apiKey = import.meta.env.VITE_APP_KEY;
 const apiUrl = 'https://api.openweathermap.org/data/2.5';
 
 function App() {
-  const { position, error, locationName } = useUserLocation(); // Använd useUserLocation-hooken för att hämta position och platsnamn
+  const { position, error} = useUserLocation();
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [unit, setUnit] = useState('metric'); // Default till Celsius
@@ -16,13 +15,11 @@ function App() {
     const fetchData = async () => {
       if (position) {
         try {
-          // Hämta nuvarande väder
           const weatherResponse = await axios.get(
             `${apiUrl}/weather?lat=${position.latitude}&lon=${position.longitude}&appid=${apiKey}&units=${unit}`
           );
           setWeatherData(weatherResponse.data);
 
-          // Hämta väderprognos för 5 dagar framåt
           const forecastResponse = await axios.get(
             `${apiUrl}/forecast?lat=${position.latitude}&lon=${position.longitude}&appid=${apiKey}&units=${unit}`
           );
@@ -41,42 +38,66 @@ function App() {
   };
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-600 text-center mt-8">Error: {error}</div>;
   }
 
   return (
-    <div className="App">
-      <h1>Väderapplikation</h1>
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">Temper - Weather application</h1>
 
-      {/* Visa nuvarande platsnamn om det är tillgängligt */}
-      {locationName && (
-        <div>
-          <h2>Nuvarande position: {locationName}</h2>
-        </div>
-      )}
+        {position && (
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Nuvarande position:</h2>
+            <p>Latitude: {position.latitude}</p>
+            <p>Longitude: {position.longitude}</p>
+          </div>
+        )}
 
-      {weatherData && (
-        <div>
-          <h2>Nuvarande väder</h2>
-          <p>Temperatur: {weatherData.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
-          <p>Vindstyrka: {weatherData.wind.speed} {unit === 'metric' ? 'm/s' : 'mph'}</p>
-          <p>Luftfuktighet: {weatherData.main.humidity}%</p>
-          <p>Soluppgång: {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString()}</p>
-          <p>Solnedgång: {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString()}</p>
-          <button onClick={toggleUnit}>Byt enhet</button>
-        </div>
-      )}
-
-      {forecastData && (
-        <div>
-          <h2>Väderprognos för 5 dagar framåt</h2>
-          {forecastData.list.slice(0, 5).map((forecast, index) => (
-            <div key={index}>
-              <p>Dag {index + 1}: {forecast.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
+        {weatherData && (
+          <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h2 className="text-xl font-semibold text-gray-800">Current Weather</h2>
+            <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center">
+                <img
+                  className="w-12 h-12 mr-4"
+                  src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
+                  alt="Weather Icon"
+                />
+                <div>
+                  <p className="text-lg text-gray-700">{weatherData.weather[0].description}</p>
+                  <p className="text-3xl font-bold text-gray-800">{weatherData.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
+                </div>
+              </div>
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+                onClick={toggleUnit}
+              >
+                Change Unit
+              </button>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
+
+        {forecastData && (
+          <div className="grid grid-cols-1 gap-4">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">5-Day Forecast</h2>
+            {forecastData.list.slice(0, 5).map((forecast, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow">
+                <p className="font-semibold">Day {index + 1}</p>
+                <div className="flex items-center justify-between mt-2">
+                  <img
+                    className="w-8 h-8"
+                    src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  />
+                  <p className="text-lg text-gray-800">{forecast.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
