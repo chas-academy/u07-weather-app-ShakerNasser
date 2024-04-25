@@ -14,6 +14,7 @@ const HourlyForecast = ({ latitude, longitude }) => {
         const response = await axios.get(
           `${apiUrl}/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
         );
+        // Extrahera de närmaste 6 timmarna från prognosen
         const next6HoursForecast = response.data.list.slice(0, 6);
         setHourlyForecast(next6HoursForecast);
       } catch (error) {
@@ -87,19 +88,14 @@ const App = () => {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Temper - Weather application</h1>
 
-        {position && (
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold"> Current Position:</h2> 
-            <p>Latitude: {position.latitude}</p>
-            <p>Longitude: {position.longitude}</p>
-            <p>Country: {weatherData.sys.country}</p>
-            <p>Area: {weatherData.name}</p>
-          </div>
-        )}
-
         {weatherData && (
           <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
             <h2 className="text-xl font-semibold text-gray-800">Current Weather</h2>
+            <div className="mb-4">
+            <h2 className="text-xl font-semibold">Current Position:</h2>
+            <p>Country: {weatherData.sys.country}</p>
+            <p>Area: {weatherData.name}</p>
+          </div>
             <div className="flex items-center justify-between mt-4">
               <div className="flex items-center">
                 <img
@@ -110,16 +106,10 @@ const App = () => {
                 <div>
                   <p className="text-lg text-gray-700">{weatherData.weather[0].description}</p>
                   <p className="text-3xl font-bold text-gray-800">{weatherData.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
-                  <br/>
-                  <p>Feels like: {weatherData.main.feels_like}°{unit === 'metric' ? 'C' : 'F'}</p>
-
                   <p>Wind Speed: {weatherData.wind.speed} {unit === 'metric' ? 'm/s' : 'mph'}</p>
                   <p>Humidity: {weatherData.main.humidity}%</p>
                   <p>Sunrise: {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString()}</p>
                   <p>Sunset: {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString()}</p>
-
-
-
                 </div>
               </div>
               <button
@@ -131,19 +121,13 @@ const App = () => {
             </div>
           </div>
         )}
-<div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-<h2 className="text-xl font-semibold text-gray-800">Hourly Forecast</h2>
 
-{position && <HourlyForecast latitude={position.latitude} longitude={position.longitude} />}
-
-</div>
-        <br />
         {forecastData && (
           <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
             <h2 className="text-xl font-semibold text-gray-800">5-Day Forecast</h2>
             <div className="grid grid-cols-3 gap-4">
               {forecastData.list.slice(0, 6).map((forecast, index) => (
-                <div key={index} className="p-4 rounded-lg shadow">
+                <div key={index} className="bg-gray-200 p-4 rounded-lg shadow">
                   <p className="font-semibold">Day {index + 1}</p>
                   <p><strong>Date:</strong> {new Date(forecast.dt * 1000).toLocaleDateString()}</p>
                   <img
@@ -159,6 +143,7 @@ const App = () => {
           </div>
         )}
 
+        {position && <HourlyForecast latitude={position.latitude} longitude={position.longitude} />}
       </div>
     </div>
   );
