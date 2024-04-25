@@ -1,4 +1,4 @@
-# Weather App
+# Temper - Weather App
 
 A weather application that allows you to view current weather conditions for your current location and obtain a weather forecast for upcoming days and hours.
 
@@ -9,13 +9,13 @@ A weather application that allows you to view current weather conditions for you
   - Wind Speed
   - Humidity
   - Sunrise and Sunset times
-  - Option to choose between Fahrenheit and Celsius
+  - Option to choose between Fahrenheit and Celsius (button thats changes the units)
 
 - **Weather Forecast**
   - **5-Day Overview**:
     - Brief summary of weather (e.g., temperature and additional information)
   - **Remaining Hours of the Day**:
-    - Hourly breakdown of temperature, weather description, wind speed, and humidity
+    - Hourly breakdown of temperature, weather description.
 
 ## Technical Information
 
@@ -35,8 +35,7 @@ A weather application that allows you to view current weather conditions for you
 - Vite 
 - Tailwind CSS
 - Flowbite
-- 
 
 ## Deployment
 
-Netlify - 
+Netlify - https://tempeer.netlify.app/
