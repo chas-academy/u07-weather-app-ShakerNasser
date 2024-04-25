@@ -122,14 +122,14 @@ const App = () => {
         )}
 
 <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-<h2 className="text-xl font-semibold text-gray-800">Hourly Forecast</h2>
+<h2 className="text-xl font-semibold text-gray-800">Hourly Forecast - 3 hours intervall</h2>
 
 {position && <HourlyForecast latitude={position.latitude} longitude={position.longitude} />}
 </div>
 
         {forecastData && (
           <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-            <h2 className="text-xl font-semibold text-gray-800">5-Day Forecast</h2>
+            <h2 className="text-xl font-semibold text-gray-800">6-Day Forecast</h2>
             <div className="grid grid-cols-3 gap-4">
               {forecastData.list.slice(0, 6).map((forecast, index) => (
                 <div key={index} className="p-4 rounded-lg shadow">
