@@ -90,10 +90,10 @@ const App = () => {
         {position && (
           <div className="mb-4">
             <h2 className="text-xl font-semibold"> Current Position:</h2> 
-            {/* <p>Latitude: {position.latitude}</p>
-            <p>Longitude: {position.longitude}</p> */}
-            <p> Country: {weatherData.sys.country}</p>
-            <p> Area: {weatherData.name}</p>
+            <p>Latitude: {position.latitude}</p>
+            <p>Longitude: {position.longitude}</p>
+            <p>Country: {weatherData.sys.country}</p>
+            <p>Area: {weatherData.name}</p>
           </div>
         )}
 
