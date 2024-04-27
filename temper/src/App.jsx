@@ -38,7 +38,7 @@ const HourlyForecast = ({ latitude, longitude }) => {
             src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`}
             alt="Weather Icon"
           />
-          <p className="text-lg text-gray-800">{forecast.main.temp}°C</p>
+          <p className="text-lg text-gray-800">{forecast.main.temp.toFixed()}°C</p>
           <p>{forecast.weather[0].description}</p>
         </div>
       ))}
@@ -104,7 +104,7 @@ const App = () => {
                 />
                 <div>
                   <p className="text-lg text-gray-700">{weatherData.weather[0].description}</p>
-                  <p className="text-3xl font-bold text-gray-800">{weatherData.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
+                  <p className="text-3xl font-bold text-gray-800">{weatherData.main.temp.toFixed()}°{unit === 'metric' ? 'C' : 'F'}</p>
                   <p>Wind Speed: {weatherData.wind.speed} {unit === 'metric' ? 'm/s' : 'mph'}</p>
                   <p>Humidity: {weatherData.main.humidity}%</p>
                   <p>Sunrise: {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString()}</p>
@@ -139,7 +139,7 @@ const App = () => {
                     src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`}
                     alt="Weather Icon"
                   />
-                  <p className="text-lg text-gray-800">{forecast.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
+                  <p className="text-lg text-gray-800">{forecast.main.temp.toFixed()}°{unit === 'metric' ? 'C' : 'F'}</p>
                   <p><strong>Weather:</strong> {forecast.weather[0].description}</p>
                 </div>
               ))}
